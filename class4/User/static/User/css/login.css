@@ -1,0 +1,108 @@
+html, body {
+	width: 100%;
+	height: 100%;
+	padding: 0;
+	margin: 0;
+	font-family: Microsoft YaHei;
+	background-image: url("../images/background.jpg");
+	background-size: 100% 100%;
+	background-repeat: no-repeat;
+}
+
+div#logo {
+	width: 300px;
+	height: 300px;
+	margin:0 auto;
+	background: white center url("../images/class4_logo.png") no-repeat;
+	border: 5px solid #13227A;
+	border-radius: 50%;
+	animation: loadLogo 0.5s linear 1s 1;
+	-webkit-animation: loadLogo 0.5s linear 1s 1;
+}
+
+div#form {
+	margin: 30px auto;
+	font-size: 20px;
+	width: 300px;
+	height: 200px;
+	border-radius: 20px;
+	background-color: white;
+	box-shadow: 0 0 30px 15px black;
+	padding: 5px;
+	animation: loadForm 1s linear 1.5s 1;
+	-webkit-animation: loadForm 1s linear 1.5s 1;
+}
+
+input {
+	display: inline-block;
+}
+
+.Input {
+	font-size: 15px;
+	height: 20px;
+	width: 80%;
+	margin: 10px 30px;
+	border-top: 0px;
+	border-left: 0px;
+	border-right: 0px;
+}
+
+#hint {
+	height: 20px;
+	width: 80%;
+	display: block;
+	font-size: 15px;
+	color: red;
+	margin: 0 30px;
+	padding: 0;
+}
+
+#login {
+	background-color: blue;
+	border: 0;
+	color: white;
+	border-radius: 5px;
+	height: 20px;
+	width: 60%;
+	margin: 30px 60px;
+}
+
+@keyframes loadLogo {
+	from {
+		transform: translateY(300px);
+		width: 150px;
+		height: 150px;
+		background-size: 100px 100px;
+	}
+	to {
+		transform: translateY(0);
+		width: 300px;
+		height: 300px;
+		background-size: 200px 200px;
+	}
+}
+
+@-webkit-keyframes loadLogo {
+	from {
+		transform: translateY(300px);
+		width: 150px;
+		height: 150px;
+		background-size: 100px 100px;
+	}
+	to {
+		transform: translateY(0);
+		width: 300px;
+		height: 300px;
+		background-size: 200px 200px;
+	}
+}
+
+@keyframes loadForm {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}
+
+@-webkit-keyframes loadForm {
+	from {opacity: 0;}
+	to {opacity: 1;}
+}

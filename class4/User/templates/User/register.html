@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>注册页面</title>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script> -->
+    <!-- <script type="text/javascript" src="./templates/User/register.js"></script> -->
+  </head>
+
+  <body>
+    <form action="" method="post">
+      <!-- 一定要加这句话！！ -->
+      {% csrf_token %}
+      <p> 用户名： <input type="text" name="user_name" value=""> </p>
+      <p> 密码： <input type="password" name="password" value=""> </p>
+      <p> 再次输入密码： <input type="password" name="password_twice" value=""> </p>
+      <p><input type="submit" name="submit" value="提交">
+          <input type='reset' name="reset" value="重置">
+    </form>
+    <a href="{% url 'login' %}">登录</a>
+  </body>
+</html>

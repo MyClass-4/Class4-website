@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>用户登录</title>
+	<meta charset="utf-8">
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+	{% load staticfiles %}
+	<link rel='stylesheet' type='text/css' href="{% static 'User/css/login.css' %}" />
+	<script type='text/javascript' src="{% static 'User/js/login.js' %}"></script>
+</head>
+<body>
+	<div id="logo"></div>
+	<div id="form">
+		<form action="#" method="post">
+			<!-- 一定要加这句话！！ -->
+      {% csrf_token %}
+			<input id="number" class="Input" type="text" name="studentNumber" placeholder="请输入八位学号">
+			<input id="password" class="Input" type="password" name="password" placeholder="请输入密码">
+			<span id="hint"></span>
+			<input id="login" type="submit" name="submit" value="登录">
+		</form>
+	</div>
+</body>
+</html>
