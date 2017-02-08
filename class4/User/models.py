@@ -19,14 +19,14 @@ def avatar_file_name(instance, filename):
         os.remove(fn + ext)
     return os.path.join('avatars', fn + ext)
 
-    
+
 # @python_2_unicode_compatible
 class User(models.Model):
     user_name = models.CharField('用户名', max_length=200, default='')
     real_name = models.CharField('真名', max_length=200, default='')
     password = models.CharField('密码', max_length=200, default=encry('123456'), blank=True)
     sign = models.CharField('个性签名', max_length=200, default='')
-    avatar = models.ImageField(upload_to=avatar_file_name, default='avatars/default.jpg')
+    avatar = models.ImageField(upload_to="avatars", default='avatars/default.jpg')
 
     # def __ str__(self):
     #     return self.user_name

@@ -17,15 +17,20 @@ def encry(password):
 def login(request):
     if request.method == 'POST':
         # 教程上有个get_object_or_404的用法，这里应该也可以用
-        user_name = request.POST.get('user_name', None)
+        user_name = request.POST.get('studentNumber', None)
         password = request.POST.get('password', None)
         password = encry(password)
 
+        print user_name
+        print password
+
         try:
             user = User.objects.get(user_name = user_name, password = password)
+            print '==>> login success'
             request.session['user_name'] = user_name
             return JsonResponse({'state': 1, 'url': '/'})
         except:
+            print '==>> login false'
             return JsonResponse({'state': 0})
     else:
         return render(request, 'User/login.html')
