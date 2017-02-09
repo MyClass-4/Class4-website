@@ -18,9 +18,12 @@ from django.contrib import admin
 from User.views import index as User_views_index
 from django.conf.urls.static import static
 from django.conf import settings
+import django
 
 urlpatterns = [
     url(r'^$', User_views_index, name='index'),
     url(r'^User/', include('User.urls')),
     url(r'^admin/', admin.site.urls),
 ]
+
+urlpatterns += url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
