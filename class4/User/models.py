@@ -6,11 +6,13 @@ from django.utils.encoding import python_2_unicode_compatible
 import hashlib
 import os
 
+
 def encry(password):
     p = hashlib.md5()
     p.update(password)
     return p.hexdigest()
 # Create your models here.
+
 
 def avatar_file_name(instance, filename):
     fn, ext = os.path.splitext(filename)
@@ -33,6 +35,7 @@ class User(models.Model):
 
     def __unicode__(self):
         return self.user_name
+
     class Meta:
         # 单数元信息
         verbose_name = '用户'

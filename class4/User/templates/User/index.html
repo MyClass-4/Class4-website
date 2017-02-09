@@ -14,6 +14,6 @@
         <a href="{% url 'logout' %}">登出</a>
       <hr>
       <p> 个性签名：{{user.sign}}</p>
-      <img src="{{user.avatar}}" alt="头像"/>
+      <img src="{{user.avatar.url}}" alt="头像"/>
     </body>
 </html>
