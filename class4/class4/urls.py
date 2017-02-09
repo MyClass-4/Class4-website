@@ -24,6 +24,7 @@ urlpatterns = [
     url(r'^$', User_views_index, name='index'),
     url(r'^User/', include('User.urls')),
     url(r'^admin/', admin.site.urls),
+    url(r'Forum/', include('Forum.urls')),
 ]
 
 urlpatterns += url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),

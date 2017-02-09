@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'Forum/css/forum_index.css' %}" type="text/css">
+    </head>
+    <body>
+        <div id="body-containor">
+            <div id="page-nav">
+                 <a href="{% url 'index' %}">首页</a>
+                >
+                <a href="{% url 'forum_index' %}">论坛</a>
+            </div>
+            <hr>
+            <div id="head-board">
+                <scan>话题</scan>
+                <a href="{% url 'forum_create_topic' %}">新建话题</a>
+            </div>
+            <hr>
+            {% for topic in topic_list %}
+                <div id="topic">
+                    <a href="{% url 'forum_topic' topic.id %}"><scan id="title">{{ topic.title }}</scan></a>
+                    <div id="content">{{ topic.content|safe }}</div>
+                    <div id="script-containor">
+                        <scan>{{ topic.release_time|date:"F j, Y" }}</scan>
+                        <scan>作者：{{ topic.author.real_name }}</scan>
+                    </div>
+                </div>
+                <hr>
+            {% endfor %}
+        </div>
+    </body>
+</html>

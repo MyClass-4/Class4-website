@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
+        {% load staticfiles %}
+        <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
+        <link href="{% static 'simditor/styles/simditor.css' %}" rel="stylesheet" type="text/css" />
+        <script type="text/javascript" src="{% static 'simditor/scripts/jquery.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'simditor/scripts/module.js' %}"></script>
+        <script type="text/javascript" src="{% static 'simditor/scripts/hotkeys.js' %}"></script>
+        <script type="text/javascript" src="{% static 'simditor/scripts/uploader.js' %}"></script>
+        <script type="text/javascript" src="{% static 'simditor/scripts/simditor.js' %}"></script>
+
+    </head>
+    <body>
+        <div id="body-containor">
+            <div id="page-nav">
+                 <a href="{% url 'index' %}">首页</a>
+                >
+                <a href="{% url 'forum_index' %}">论坛</a>
+                >
+                <a href="">帖子</a>
+            </div>
+            <hr>
+            <div id="head-board">
+                <scan>话题</scan>
+                <a href="#new-posting">我要跟帖</a>
+            </div>
+            <hr>
+            <div id="floor">
+                <div class="left">
+                    <p><img src="{{ topic.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
+                    <scan>{{ topic.author.real_name }}</scan>
+                </div>
+                <div class="right">
+                    <p class="title">{{ topic.title }}</p>
+                    <p class="content">{{ topic.content|safe }}</p>
+                    <p class="script-containor">
+                        <scan>{{ topic.release_time|date:"F j, Y" }}</scan>
+                        <scan>作者：{{ topic.author.real_name }}</scan>
+                    </p>
+                </div>
+            </div>
+            <hr>
+            <hr>
+            {% for posting in posting_list.all %}
+                <div class="left">
+                    <p><img src="{{ posting.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
+                    <scan>{{ posting.author.real_name }}</scan>
+                </div>
+                <div class="right">
+                    <p class="content">{{ posting.content|safe }}</p>
+                    <p class="script-containor">
+                        <scan>点赞：{{ posting.like }}</scan>
+                        <scan>{{ posting.release_time|date:"F j, Y" }}</scan>
+                        <scan>作者：{{ posting.author.real_name }}</scan>
+                    </p>
+                </div>
+                <hr>
+            {% endfor %}
+
+            <form id="new-posting" action="{% url 'forum_create_posting' topic.id %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div id="posting-editor">
+                    <textarea id="topic_editor" name="content"></textarea>
+                </div>
+                <input type="submit" value="发布">
+            </form>
+
+         <script>
+            var topic_editor = new Simditor({
+                textarea: $('#topic_editor'),
+                placeholder : '回复...',
+                toolbar : [
+                    'title',
+                    'bold',
+                    'italic',
+                    'underline',
+                    'strikethrough',
+                    'fontScale',
+                    'color',
+                    'ol',             //# ordered list
+                    'ul',             //# unordered list
+                    'blockquote',
+                    'code',           //# code block
+                    'table',
+                    'link',
+                    'image',
+                    'hr',             //# horizontal ruler
+                    'indent',
+                    'outdent',
+                    'alignment',
+                ],  //工具栏
+                upload: {
+                    url: '{% url 'forum_uploadImg' %}',
+                    params: null,
+                    fileKey: 'imgFile',
+                    connectionCount: 3,
+                    leaveConfirm: 'Uploading is in progress, are you sure to leave this page?',
+                },
+                json: {
+                    "success": true/false,
+                    "msg": "error message",
+                    "file_path": "[real file path]"
+                }
+            });
+        </script>
+        </div>
+
+    </body>
+</html>
