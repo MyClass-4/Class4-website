@@ -11,6 +11,7 @@ import os
 import json
 # Create your views here.
 
+
 def index(request):
     if request.session.get('user_name', None):
         homework_list = Homework.objects.all()
@@ -20,11 +21,14 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse('login'))
 
+
 @csrf_exempt
 def upload_homework(request):
     if request.session.get('user_name', None):
-        user_name =request.session['user_name']
+        print '================>>>>>'
+        user_name = request.session['user_name']
         files = request.FILES['homework_file']
+        print '==>', files
         course_name = request.POST.get('course_name')
         homework_name = request.POST.get('homework_name')
 
@@ -49,6 +53,7 @@ def upload_homework(request):
             # # 如果已存在该文件先删除
             # if os.path.exists(pre_file_dir):
             #     os.remove(pre_file_dir)
+
             homework_item.homework_file = files
             homework_item.save()
             info = {}
@@ -56,8 +61,10 @@ def upload_homework(request):
             info['msg'] = '覆盖文件成功'
             print '==> cover homeworkItem successfully'
             return JsonResponse(info)
+            # return HttpResponseRedirect(reverse('homework_index'))
     else:
         return HttpResponseRedirect(reverse('login'))
+
 
 def homework_info(request, homework_id):
     if request.session.get('user_name', None):

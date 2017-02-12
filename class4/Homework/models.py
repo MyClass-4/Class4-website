@@ -8,6 +8,7 @@ import os
 
 # Create your models here.
 
+
 class Course(models.Model):
     name = models.CharField('课程名称', max_length=200, blank=False, null=False, default='课程名称')
     teacher = models.CharField('老师', max_length=200, blank=True, default='老师')
@@ -22,7 +23,7 @@ class Course(models.Model):
 
 class Homework(models.Model):
     course = models.ForeignKey(Course, verbose_name='课程', related_name='homework_of_course_set', \
-                                related_query_name='postingOfCourse', null=False)
+                                related_query_name='homeworkOfCourse', null=False)
     name = models.CharField('作业名称', max_length=250, blank=False, default='作业')
     detail = models.CharField('备注', max_length=500, blank=True, default='备注')
     is_over = models.BooleanField('状态', default=False)
@@ -39,10 +40,10 @@ class Homework(models.Model):
 
 
 def upload_homework(instance, filename):
-    pre_file_dir = os.path.join(settings.MEDIA_ROOT, ('homework/%s/%s/%s/%s' % (instance.homework.course.name, instance.homework.name, instance.author.user_name, filename))).replace('\\', '/')
+    pre_file_dir = os.path.join(settings.MEDIA_ROOT, ('homework/%s/%s/%s' % (instance.homework.course.name, instance.homework.name,filename))).replace('\\', '/')
     if os.path.exists(pre_file_dir):
         os.remove(pre_file_dir)
-    return 'homework/%s/%s/%s/%s' % (instance.homework.course.name, instance.homework.name, instance.author.user_name, filename)
+    return 'homework/%s/%s/%s' % (instance.homework.course.name, instance.homework.name, filename)
 
 class Homework_item(models.Model):
     homework = models.ForeignKey(Homework, verbose_name='作业名称', related_name='homework_item_of_homework_set', \

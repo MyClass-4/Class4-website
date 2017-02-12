@@ -6,15 +6,18 @@
 
         {% load staticfiles %}
         <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
-        <link href="{% static 'simditor/styles/simditor.css' %}" rel="stylesheet" type="text/css" />
-        <script type="text/javascript" src="{% static 'simditor/scripts/jquery.min.js' %}"></script>
-        <script type="text/javascript" src="{% static 'simditor/scripts/module.js' %}"></script>
-        <script type="text/javascript" src="{% static 'simditor/scripts/hotkeys.js' %}"></script>
-        <script type="text/javascript" src="{% static 'simditor/scripts/uploader.js' %}"></script>
-        <script type="text/javascript" src="{% static 'simditor/scripts/simditor.js' %}"></script>
 
-{#        <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js'%}"></script>#}
-{#        <script charset="utf-8" src="{%  static 'kindeditor-4.1.10/lang/zh_CN.js'%}"></script>#}
+         <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+        <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
+        <script>
+            KindEditor.ready(function(K) {
+                window.editor = K.create('#topic_editor', {
+                      uploadJson: '{% url 'forum_uploadImg' %}',
+                      // form data name="imgFiel"
+                });
+
+            });
+        </script>
 
     </head>
     <body>
@@ -36,44 +39,6 @@
             <textarea id="topic_editor" name="content"></textarea>
             <input type="submit" value="发布帖子">
         </form>
-        <script>
-            var topic_editor = new Simditor({
-                textarea: $('#topic_editor'),
-                placeholder : '这里输入内容...',
-                toolbar : [
-                    'title',
-                    'bold',
-                    'italic',
-                    'underline',
-                    'strikethrough',
-                    'fontScale',
-                    'color',
-                    'ol',             //# ordered list
-                    'ul',             //# unordered list
-                    'blockquote',
-                    'code',           //# code block
-                    'table',
-                    'link',
-                    'image',
-                    'hr',             //# horizontal ruler
-                    'indent',
-                    'outdent',
-                    'alignment',
-                ],  //工具栏
-                upload: {
-                    url: '{% url 'forum_uploadImg' %}',
-                    params: null,
-                    fileKey: 'imgFile',
-                    connectionCount: 3,
-                    leaveConfirm: 'Uploading is in progress, are you sure to leave this page?',
-                },
-                json: {
-                    "success": true/false,
-                    "msg": "error message",
-                    "file_path": "[real file path]"
-                }
-            });
-        </script>
     </div>
 
     </body>

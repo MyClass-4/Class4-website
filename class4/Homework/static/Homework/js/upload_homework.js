@@ -63,13 +63,19 @@ var uploadfile = function() {
 		$.ajax({
 			method: "POST",
 			url: "upload_homework",
-			data: $('#homework_form').serialize(),
+			//data: $('#homework_form').serialize(),
+			data: new FormData($('#homework_form')[0]),
+			processData:false,
+ 			contentType:false,
+			beforeSend: function() {
+
+			},
 			success: function(data) {
 				if (data["success"])
 					upload_success();
 			}
 		});
-		//return false;
+		return false;
 }
 //Ajax这部分是之前的版本加上一个浏览器版本检测，我不知道行不行因为我没找到老版本的浏览器也没有写后端
 // function uploadfile(){

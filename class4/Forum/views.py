@@ -63,15 +63,13 @@ def uploadImg(request):
         print upload_url
         try:
             open(file_path, 'wb+').write(files.read())  # 上传文件
-            info['success'] = True
-            info['file_path'] = upload_url
-            info['msg'] = ''
+            info['error'] = 0
+            info['url'] = upload_url
             print '===> success'
             return HttpResponse(json.dumps(info))
         except:
-            info['success'] = False
-            info['file_path'] = upload_url
-            info['msg'] = ''
+            info['error'] = False
+            info['url'] = upload_url
             print '====> fail'
             return HttpResponse(json.dumps(info))
     else:
