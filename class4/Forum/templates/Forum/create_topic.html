@@ -1,45 +1,32 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8" name="create_topic" >
+{% block title %}
         <title>新建话题</title>
+{% endblock %}
 
-        {% load staticfiles %}
-        <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
+{% block css_js_static %}
+{% load staticfiles %}
+  <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
 
-         <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
-        <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
-        <script>
-            KindEditor.ready(function(K) {
-                window.editor = K.create('#topic_editor', {
-                      uploadJson: '{% url 'forum_uploadImg' %}',
-                      // form data name="imgFiel"
-                });
+   <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
+  <script>
+      KindEditor.ready(function(K) {
+          window.editor = K.create('#topic_editor', {
+                uploadJson: '{% url 'forum_uploadImg' %}',
+                // form data name="imgFiel"
+          });
 
-            });
-        </script>
+      });
+  </script>
+{% endblock %}
 
-    </head>
-    <body>
-    <div id="body-containor">
-        <div id="page-nav">
-            <a href="{% url 'index' %}">首页</a>
-            >
-            <a href="{% url 'forum_index' %}">论坛</a>
-            >
-            <a href="">发帖子</a>
-        </div>
-        <hr>
-        <div id="head-board">
-            <scan>新建话题</scan>
-        </div>
-        <form action="" enctype="multipart/form-data" method="post">
-            {% csrf_token %}
-            <input type="text" name="title" placeholder="标题">
-            <textarea id="topic_editor" name="content"></textarea>
-            <input type="submit" value="发布帖子">
-        </form>
-    </div>
-
-    </body>
-</html>
+{% block content %}
+  <div id="head-board">
+      <span>新建话题</span>
+  </div>
+  <form action="" enctype="multipart/form-data" method="post">
+      {% csrf_token %}
+      <input type="text" name="title" placeholder="标题">
+      <textarea id="topic_editor" name="content"></textarea>
+      <input type="submit" value="发布帖子">
+  </form>
+{% endblock %}

@@ -1,80 +1,67 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        {% load staticfiles %}
-        <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
-        {% load staticfiles %}
-        <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
+{% extends "base.html" %}
 
-        <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
-        <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
-        <script>
-            KindEditor.ready(function(K) {
-                window.editor = K.create('#topic_editor', {
-                      uploadJson: '{% url 'forum_uploadImg' %}',
-                      // form data name="imgFiel"
-                });
+{% block css_js_static %}
+{% load staticfiles %}
+  <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
+  <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
 
-            });
-        </script>
+  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
+  <script>
+      KindEditor.ready(function(K) {
+          window.editor = K.create('#topic_editor', {
+                uploadJson: '{% url 'forum_uploadImg' %}',
+                // form data name="imgFiel"
+          });
 
-    </head>
-    <body>
-        <div id="body-containor">
-            <div id="page-nav">
-                 <a href="{% url 'index' %}">首页</a>
-                >
-                <a href="{% url 'forum_index' %}">论坛</a>
-                >
-                <a href="">帖子</a>
-            </div>
-            <hr>
-            <div id="head-board">
-                <scan>话题</scan>
-                <a href="#new-posting">我要跟帖</a>
-            </div>
-            <hr>
-            <div id="floor">
-                <div class="left">
-                    <p><img src="{{ topic.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
-                    <scan>{{ topic.author.real_name }}</scan>
-                </div>
-                <div class="right">
-                    <p class="title">{{ topic.title }}</p>
-                    <p class="content">{{ topic.content|safe }}</p>
-                    <p class="script-containor">
-                        <scan>{{ topic.release_time|date:"F j, Y" }}</scan>
-                        <scan>作者：{{ topic.author.real_name }}</scan>
-                    </p>
-                </div>
-            </div>
-            <hr>
-            <hr>
-            {% for posting in posting_list.all %}
-                <div class="left">
-                    <p><img src="{{ posting.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
-                    <scan>{{ posting.author.real_name }}</scan>
-                </div>
-                <div class="right">
-                    <p class="content">{{ posting.content|safe }}</p>
-                    <p class="script-containor">
-                        <scan>点赞：{{ posting.like }}</scan>
-                        <scan>{{ posting.release_time|date:"F j, Y" }}</scan>
-                        <scan>作者：{{ posting.author.real_name }}</scan>
-                    </p>
-                </div>
-                <hr>
-            {% endfor %}
+      });
+  </script>
+{% endblock %}
 
-            <form id="new-posting" action="{% url 'forum_create_posting' topic.id %}" enctype="multipart/form-data" method="post">
-                {% csrf_token %}
-                <div id="posting-editor">
-                    <textarea id="topic_editor" name="content"></textarea>
-                </div>
-                <input type="submit" value="发布">
-            </form>
+
+{% block content %}
+    <div id="head-board">
+        <scan>话题</scan>
+        <a href="#new-posting">我要跟帖</a>
+    </div>
+    <hr>
+    <div id="floor">
+        <div class="left">
+            <p><img src="{{ topic.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
+            <scan>{{ topic.author.real_name }}</scan>
         </div>
+        <div class="right">
+            <p class="title">{{ topic.title }}</p>
+            <p class="content">{{ topic.content|safe }}</p>
+            <p class="script-containor">
+                <scan>{{ topic.release_time|date:"F j, Y" }}</scan>
+                <scan>作者：{{ topic.author.real_name }}</scan>
+            </p>
+        </div>
+    </div>
+    <hr>
+    <hr>
+    {% for posting in posting_list.all %}
+        <div class="left">
+            <p><img src="{{ posting.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
+            <scan>{{ posting.author.real_name }}</scan>
+        </div>
+        <div class="right">
+            <p class="content">{{ posting.content|safe }}</p>
+            <p class="script-containor">
+                <scan>点赞：{{ posting.like }}</scan>
+                <scan>{{ posting.release_time|date:"F j, Y" }}</scan>
+                <scan>作者：{{ posting.author.real_name }}</scan>
+            </p>
+        </div>
+        <hr>
+    {% endfor %}
 
-    </body>
-</html>
+    <form id="new-posting" action="{% url 'forum_create_posting' topic.id %}" enctype="multipart/form-data" method="post">
+        {% csrf_token %}
+        <div id="posting-editor">
+            <textarea id="topic_editor" name="content"></textarea>
+        </div>
+        <input type="submit" value="发布">
+    </form>
+{% endblock %}

@@ -1,97 +1,90 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-		{% load staticfiles %}
-		<link type="text/css" rel="stylesheet" href="{% static 'Homework/css/upload_homework_page.css' %}" />
-		<script src="{% static 'Homework/js/jquery-3.1.1.min.js' %}"></script>
-		<script type="application/javascript" src="{% static 'Homework/js/upload_homework.js' %}"></script>
-		<title>作业</title>
-		</head>
+{% extends "base.html" %}
 
-				<body>
-					<hr />
-					<a href="{% url 'index' %}">首页</a>
-					<a href="{% url 'forum_index' %}">论坛</a>
-					<a href="{% url 'homework_index' %}">作业</a>
-					<hr />
-				<div id="main_body">
+{% block title %}
+<title>作业</title>
+{% endblock %}
 
-					<div id="title">
-				    	作业概览
-				    </div>
+{% block css_js_static %}
+{% load staticfiles %}
+<link type="text/css" rel="stylesheet" href="{% static 'Homework/css/upload_homework_page.css' %}" />
+<script src="{% static 'Homework/js/jquery-3.1.1.min.js' %}"></script>
+<script type="application/javascript" src="{% static 'Homework/js/upload_homework.js' %}"></script>
+{% endblock %}
 
-				    <div id="homework_container">
-							<ul id="homework_board">
-								{% for homework in homework_list %}
-									<li class="homework">
-										<div class="homework_title">
-											{{homework.course.name}}&nbsp&nbsp{{homework.name}}
-										</div>
-										<div class="homework_detail">
-											{{homework.detail}}
-										</div>
-										<div class="homework_state">
-											<span class="is_over">
-												{% if is_over %}
-													已结束
-												{% else %}
-													未结束
-												{% endif %}
-											</span>
-												<!--查看详情跳转到详情以及评论页面-->
+{% block content %}
+	<div id="title">
+  	作业概览
+  </div>
 
-												<a class="to_comment" href="{% url 'homework_info' homework.id %}">查看详情</a>
-												<span class="upload click_able">可提交</span>
-											</div>
-										</li>
-								{% endfor %}
-							</ul>
-				    </div>
+    <div id="homework_container">
+			<ul id="homework_board">
+				{% for homework in homework_list %}
+					<li class="homework">
+						<div class="homework_title">
+							{{homework.course.name}}&nbsp&nbsp{{homework.name}}
+						</div>
+						<div class="homework_detail">
+							{{homework.detail}}
+						</div>
+						<div class="homework_state">
+							<span class="is_over">
+								{% if is_over %}
+									已结束
+								{% else %}
+									未结束
+								{% endif %}
+							</span>
+								<!--查看详情跳转到详情以及评论页面-->
 
-				    <div id="upload_homework" class="hide_div">
-				    	<div id="upload_homework_background">
-				        </div>
+								<a class="to_comment" href="{% url 'homework_info' homework.id %}">查看详情</a>
+								<span class="upload click_able">可提交</span>
+							</div>
+						</li>
+				{% endfor %}
+			</ul>
+    </div>
 
-				    	<form id="homework_form" action="upload_homework" method="post" enctype="multipart/form-data">
-									{% csrf_token %}
-				        	<div class="form_content">
-				            	<label for="course_name">课程</label>
-				                <select id="courses_select" name="course_name">
-				                	<!-- <option>数电</option> -->
-													{% for course in course_list %}
-														<option value="{{course.name}}">{{course.name}}</option>
-													{% endfor %}
-				                </select>
-				            </div>
-				            <div class="form_content">
-				            	<label for="homework_name">作业</label>
-				                <select id="homework_select" name="homework_name">
-				                	<!-- <option>第14周作业</option> -->
-													{% for homework in homework_list %}
-														{% if not homework.is_over %}
-															<option>{{homework.name}}
-														{% endif %}
-													{% endfor %}
-				                </select>
-				            </div>
-				            <div class="form_content">
-				                <label for="file">文件上传</label>
-				                <input type="file" name="homework_file" id="homework_file">
-												<span id="hint"></span>
-				            </div>
-				            <div class="form_content">
-				            	<span>状态：</span>
-				                <span id="upload_state">未提交</span>
-				            </div>
-				            <div class="form_content">
-				                <label for="submit"></label>
-				                <input type="submit" name="submit" id="submit" value="提交">
-				            </div>
-				        </form>
-				    </div>
+    <div id="upload_homework" class="hide_div">
+    	<div id="upload_homework_background">
+        </div>
 
-				</div>
+    	<form id="homework_form" action="upload_homework" method="post" enctype="multipart/form-data">
+					{% csrf_token %}
+        	<div class="form_content">
+            	<label for="course_name">课程</label>
+                <select id="courses_select" name="course_name">
+                	<!-- <option>数电</option> -->
+									{% for course in course_list %}
+										<option value="{{course.name}}">{{course.name}}</option>
+									{% endfor %}
+                </select>
+            </div>
+            <div class="form_content">
+            	<label for="homework_name">作业</label>
+                <select id="homework_select" name="homework_name">
+                	<!-- <option>第14周作业</option> -->
+									{% for homework in homework_list %}
+										{% if not homework.is_over %}
+											<option>{{homework.name}}
+										{% endif %}
+									{% endfor %}
+                </select>
+            </div>
+            <div class="form_content">
+                <label for="file">文件上传</label>
+                <input type="file" name="homework_file" id="homework_file">
+								<span id="hint"></span>
+            </div>
+            <div class="form_content">
+            	<span>状态：</span>
+                <span id="upload_state">未提交</span>
+            </div>
+            <div class="form_content">
+                <label for="submit"></label>
+                <input type="submit" name="submit" id="submit" value="提交">
+            </div>
+        </form>
+    </div>
+</div>
 
-				</body>
-</html>
+{% endblock %}
