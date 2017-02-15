@@ -2,18 +2,29 @@
 
 {% block css_js_static %}
 {% load staticfiles %}
-  <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
-
-  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
-  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
-  <script>
+    <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
+    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/plugins/code/prettify.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'kindeditor-4.1.10/plugins/code/prettify.css' %}">
+    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
+    <script>
       KindEditor.ready(function(K) {
           window.editor = K.create('#posting_editor', {
                 uploadJson: '{% url 'forum_uploadImg' %}',
                 // form data name="imgFile"
           });
+          prettyPrint();
       });
   </script>
+{#    <script src="{% static 'syntaxhighlighter_3.0.83/scripts/shCore.js' %}"></script>#}
+{#    <script src="{% static 'syntaxhighlighter_3.0.83/scripts/shBrushPython.js' %}"></script>#}
+{#    <link rel="stylesheet" href="{% static 'syntaxhighlighter_3.0.83/styles/shCoreDefault.css' %}">#}
+{#    <script>#}
+{#        SyntaxHighlighter.all();#}
+{#        $(function() {#}
+{#            $('pre').addClass('brush: python');#}
+{#        })#}
+{#    </script>#}
 {% endblock %}
 
 

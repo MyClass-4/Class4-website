@@ -9,7 +9,16 @@
 {% endblock %}
 
 {% block content %}
-<link rel="stylesheet" href="{% static 'Forum/css/forum_index.css' %}" type="text/css">
+    <link rel="stylesheet" href="{% static 'Forum/css/forum_index.css' %}" type="text/css">
+    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'kindeditor-4.1.10/plugins/code/prettify.css' %}">
+    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/plugins/code/prettify.js' %}"></script>
+    <script>
+       window.onload = function() {
+           prettyPrint();
+       }
+    </script>
+
     <div class="row bg-info">
         <nav class="navbar navbar-default" role="navigation">
             <div class="container-fluid">
@@ -45,6 +54,7 @@
                                     <div class="col-lg-1 col-md-1">
                                         <p class="text-success">
                                             <span class="badge">帖子{{ topic.posting_of_topic_set.count }}</span>
+
                                         </p>
                                     </div>
                                     <div class="col-lg-11 col-md-11">
