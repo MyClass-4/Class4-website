@@ -91,3 +91,20 @@ def create_posting(request, topic_id):
         #     return HttpResponseRedirect(reverse('index'))
     else:
         return HttpResponseRedirect(reverse('login'))
+
+
+def create_comment(request, posting_id):
+    if request.session.get('user_name', None) and request.method == 'POST':
+         user = User.objects.get(user_name=request.session['user_name'])
+         try:
+             posting = Posting.objects.get(id=posting_id)
+             comment_content = request.POST.get('myComment')
+             comment = Comment.objects.create(author=user, posting=posting, content=comment_content)
+             comment.save()
+             return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
+         except:
+             return HttpResponse('error1')
+             # return HttpResponseRedirect(reverse('login'))
+    else:
+        return HttpResponse('error2')
+        return HttpResponseRedirect(reverse('login'))

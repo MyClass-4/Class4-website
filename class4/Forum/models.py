@@ -52,7 +52,7 @@ class Comment(models.Model):
     release_time = models.DateField('发布时间', auto_now_add=True)
 
     def __unicode__(self):
-        return 'comment', self.id
+        return "comment_{0}".format(self.id)
 
     class Meta:
         verbose_name = '评论'

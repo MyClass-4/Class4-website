@@ -92,11 +92,12 @@
                                                 评论
                                             </div>
                                             <div class="panel-body text-left">
-                                                <ul>
-                                                    <li>dfsdf</li>
-                                                    <li>dfsdf</li>
-                                                    <li>dfsdf</li>
-                                                    <li>dfsdf</li>
+                                                <ul class="list-group">
+                                                   {% for comment in posting.comment_of_posting_set.all %}
+                                                        <li class="list-group-item">
+                                                            {{ comment.author.real_name }}：{{ comment.content|safe }}
+                                                        </li>
+                                                   {% endfor %}
                                                 </ul>
                                                 <ul class="pagination pull-right" style="margin-bottom: 0px;">
                                                     <li><a href="#">&laquo;</a></li>
@@ -107,11 +108,8 @@
                                                     <li><a href="#">5</a></li>
                                                     <li><a href="#">&raquo;</a></li>
                                                 </ul>
-
                                             </div>
-
-
-                                            <form role="form" class="form-inline panel-footer" action="">
+                                            <form role="form" class="form-inline panel-footer" action="{% url 'forum_create_comment' posting.id%}" method="post">
                                                 {% csrf_token %}
                                                 <input id="myComment" name="myComment" type="text" class="form-control" style="width: 80%"  placeholder="我也来评论">
                                                 <button class="btn btn-primary form-control">提交</button>
