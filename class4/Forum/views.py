@@ -24,7 +24,7 @@ def index(request):
 def topic_info(request, topic_id):
     if request.session.get('user_name', None):
         topic = Topic.objects.get(id=topic_id)
-        posting_list = topic.posting_of_topic_set.all()
+        posting_list = topic.posting_of_topic_set.order_by('release_time')
         print '===>>',posting_list
         info = {'topic': topic, 'posting_list': posting_list}
         print info
@@ -51,7 +51,7 @@ def create_topic(request):
 @csrf_exempt
 def uploadImg(request):
     if request.session.get('user_name', None) and request.method == 'POST':
-        files = request.FILES['fileData']
+        files = request.FILES['imgFile']
         today = datetime.datetime.today()
         file_dir = os.path.join(settings.MEDIA_ROOT, ('simditor/%d/%d/%d' % (today.year, today.month, today.day))).replace('\\', '/')
         if not os.path.exists(file_dir):

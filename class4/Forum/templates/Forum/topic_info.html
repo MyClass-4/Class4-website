@@ -3,65 +3,173 @@
 {% block css_js_static %}
 {% load staticfiles %}
   <link rel="stylesheet" href="{% static 'Forum/css/topic_info.css' %}" type="text/css">
-  <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
 
   <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
   <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
   <script>
       KindEditor.ready(function(K) {
-          window.editor = K.create('#topic_editor', {
+          window.editor = K.create('#posting_editor', {
                 uploadJson: '{% url 'forum_uploadImg' %}',
-                // form data name="imgFiel"
+                // form data name="imgFile"
           });
-
       });
   </script>
 {% endblock %}
 
 
 {% block content %}
-    <div id="head-board">
-        <scan>话题</scan>
-        <a href="#new-posting">我要跟帖</a>
+    <div class="row">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-brand" href="{% url 'index' %}">首页</a></li>
+                        <li><a class="navbar-brand" href="{% url 'forum_index' %}">论坛</a></li>
+                        <li><a class="navbar-brand" href="#">话题</a></li>
+                    </ul>
+                </div>
+                <div class="pull-right">
+                    <form class="navbar-form navbar-left" role="search">
+                        <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search">
+                        </div>
+                    <button type="submit" class="btn btn-default">提交</button>
+                    </form>
+                </div>
+            </div>
+        </nav>
     </div>
-    <hr>
-    <div id="floor">
-        <div class="left">
-            <p><img src="{{ topic.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
-            <scan>{{ topic.author.real_name }}</scan>
-        </div>
-        <div class="right">
-            <p class="title">{{ topic.title }}</p>
-            <p class="content">{{ topic.content|safe }}</p>
-            <p class="script-containor">
-                <scan>{{ topic.release_time|date:"F j, Y" }}</scan>
-                <scan>作者：{{ topic.author.real_name }}</scan>
-            </p>
-        </div>
-    </div>
-    <hr>
-    <hr>
-    {% for posting in posting_list.all %}
-        <div class="left">
-            <p><img src="{{ posting.author.avatar.url }}" alt="头像" style="width:50px; height:50px"></p>
-            <scan>{{ posting.author.real_name }}</scan>
-        </div>
-        <div class="right">
-            <p class="content">{{ posting.content|safe }}</p>
-            <p class="script-containor">
-                <scan>点赞：{{ posting.like }}</scan>
-                <scan>{{ posting.release_time|date:"F j, Y" }}</scan>
-                <scan>作者：{{ posting.author.real_name }}</scan>
-            </p>
-        </div>
-        <hr>
-    {% endfor %}
+    <div class="row">
+        <div class="col-lg-9">
+            <div class="panel panel-default">
+                <table class="table table-bordered">
+                    <thead>
+                        <td class="text-center col-lg-2">
+                            <div class="img-responsive">
+                                <p><img class="avater" src="{{ topic.author.avatar.url }}" alt="头像"></p>
+                            </div>
+                            <p>{{ topic.author.real_name }}</p>
+                            <p class="text-info ">楼主</p>
+                        </td>
+                        <td class="col-lg-10">
+                            <p class="lead">{{ topic.title }}</p>
+                            <div class="text-info thumbnail">{{ topic.content|safe }}</div>
+                            <p class="text-right">
+                                <small>{{ topic.release_time|date:"F j, Y" }}</small>
+                                <small>作者：{{ topic.author.real_name }}</small>
+                            </p>
+                        </td>
+                    </thead>
+                    <tbody>
+                    {% for posting in posting_list %}
+                        <tr>
+                            <td class="text-center">
+                                <div class="img-responsive">
+                                    <p><img class="avater" src="{{ posting.author.avatar.url }}" alt="头像" ></p>
+                                </div>
+                                <p>{{ posting.author.real_name }}</p>
+                            </td>
+                            <td>
+                                <p class="text-right">
+                                    <small>{{ forloop.counter }}楼</small>
+                                </p>
+                                <div class="text-info thumbnail">{{ posting.content|safe }}</div>
+                                <div class="text-right">
+                                    <small>点赞：{{ posting.like }}</small>
+                                    <small>{{ posting.release_time|date:"F j, Y" }}</small>
+                                    <a data-toggle="collapse" href="#collapse{{ forloop.counter }}">
+                                        <small>评论</small>
+                                    </a>
 
-    <form id="new-posting" action="{% url 'forum_create_posting' topic.id %}" enctype="multipart/form-data" method="post">
-        {% csrf_token %}
-        <div id="posting-editor">
-            <textarea id="topic_editor" name="content"></textarea>
+                                    <div id="collapse{{ forloop.counter }}" class="comment panel-collapse collapse in">
+
+                                        <script>
+                                            $('#collapse{{ forloop.counter }}').collapse('hide');
+                                        </script>
+
+                                        <div class="panel panel-default">
+                                            <div class="panel-heading">
+                                                评论
+                                            </div>
+                                            <div class="panel-body text-left">
+                                                <ul>
+                                                    <li>dfsdf</li>
+                                                    <li>dfsdf</li>
+                                                    <li>dfsdf</li>
+                                                    <li>dfsdf</li>
+                                                </ul>
+                                                <ul class="pagination pull-right" style="margin-bottom: 0px;">
+                                                    <li><a href="#">&laquo;</a></li>
+                                                    <li><a href="#">1</a></li>
+                                                    <li><a href="#">2</a></li>
+                                                    <li><a href="#">3</a></li>
+                                                    <li><a href="#">4</a></li>
+                                                    <li><a href="#">5</a></li>
+                                                    <li><a href="#">&raquo;</a></li>
+                                                </ul>
+
+                                            </div>
+
+
+                                            <form role="form" class="form-inline panel-footer" action="">
+                                                {% csrf_token %}
+                                                <input id="myComment" name="myComment" type="text" class="form-control" style="width: 80%"  placeholder="我也来评论">
+                                                <button class="btn btn-primary form-control">提交</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+                <div class="panel-footer text-center">
+                    <ul class="pagination">
+                        <li><a href="#">&laquo;</a></li>
+                        <li><a href="#">1</a></li>
+                        <li><a href="#">2</a></li>
+                        <li><a href="#">3</a></li>
+                        <li><a href="#">4</a></li>
+                        <li><a href="#">5</a></li>
+                        <li><a href="#">&raquo;</a></li>
+                    </ul>
+                </div>
+            </div>
+            <form role="form" id="new-posting" action="{% url 'forum_create_posting' topic.id %}" enctype="multipart/form-data" method="post">
+                {% csrf_token %}
+                <div id="posting-editor">
+                    <textarea class="form-control" id="posting_editor" name="content"></textarea>
+                </div>
+                <input class="btn btn-primary " type="submit" value="发布">
+            </form>
         </div>
-        <input type="submit" value="发布">
-    </form>
+        <div class="col-lg-3">
+            <div data-spy="affix">
+                <div style="height:20px"></div>
+                <div class="col-lg-10">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <p class="panel-title">热门帖子</p>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="panel-info hot-topic">
+                                <li><a href="">absfdsfafafafaf</a></li>
+                                <li><a href="">absfdsfafafafaf</a></li>
+                                <li><a href="">absfdsfafafafaf</a></li>
+                                <li><a href="">absfdsfafasssssssssssssssssssfafaf</a></li>
+                                <li><a href="">absfdsfafafafaf</a></li>
+                                <li><a href="">absfdsfafafafaf</a></li>
+                            </ul>
+                        </div>
+                        <div class="panel-footer">
+                            <button class="btn btn-primary">
+                                <a href="#new-posting" style="color: white">跟帖 <span class="glyphicon glyphicon-edit"></span></a>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
