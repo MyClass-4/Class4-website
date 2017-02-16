@@ -13,7 +13,7 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
 def getHotTopics(Topic):
-    hot_topic_list = list(Topic.objects.order_by('gitpostingOfTopic').distinct())
+    hot_topic_list = list(Topic.objects.order_by('postingOfTopic').distinct())
     hot_topic_list = hot_topic_list[0:5]
     return  hot_topic_list
 
