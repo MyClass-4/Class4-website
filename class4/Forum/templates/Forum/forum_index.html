@@ -72,13 +72,19 @@
                 </div>
                 <div class="panel-footer text-center">
                     <ul class="pagination">
-                        <li><a href="#">&laquo;</a></li>
-                        <li><a href="#">1</a></li>
-                        <li><a href="#">2</a></li>
-                        <li><a href="#">3</a></li>
-                        <li><a href="#">4</a></li>
-                        <li><a href="#">5</a></li>
-                        <li><a href="#">&raquo;</a></li>
+                        {% if current_page.has_previous %}
+                            <li><a href="#">&laquo;</a></li>
+                        {% endif %}
+                        {% for num in num_list %}
+                            {% ifequal num current_page.number %}
+                                <li class="active"><a href="?page={{ num }}">{{ num }}</a></li>
+                            {% else %}
+                                <li><a href="?page={{ num }}">{{ num }}</a></li>
+                            {% endifequal %}
+                        {% endfor %}
+                        {% if current_page.has_next %}
+                            <li><a href="#">&raquo;</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

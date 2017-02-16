@@ -9,13 +9,38 @@ from Forum.models import *
 import datetime
 import json
 import os
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
+def getSomePage(paginator, current_num):
+    num_list = list(paginator.page_range)
+    if current_num - 3 < 0:
+        if current_num + 3 < num_list[-1]:
+            return num_list[0:current_num + 3]
+        else:
+            return num_list[0:]
+    else:
+        if current_num + 3 < num_list[-1]:
+            return num_list[current_num - 3:current_num + 3]
+        else:
+            return num_list[current_num - 3:]
 
 def index(request):
     if request.session.get('user_name', None):
         topic_list = Topic.objects.all()
-        info = {'topic_list': topic_list}
+        # 分页
+        paginator = Paginator(topic_list, 6);
+        page_num = request.GET.get('page', 1)
+        try:
+            current_page = paginator.page(page_num)
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+
+        topic_list = current_page.object_list.all()
+        num_list = getSomePage(paginator, current_page.number)
+        info = {'topic_list': topic_list, 'num_list': num_list, 'current_page':current_page}
         return render(request, 'Forum/forum_index.html', info)
     else:
         return HttpResponseRedirect(reverse('login'))
@@ -25,8 +50,20 @@ def topic_info(request, topic_id):
     if request.session.get('user_name', None):
         topic = Topic.objects.get(id=topic_id)
         posting_list = topic.posting_of_topic_set.order_by('release_time')
-        print '===>>',posting_list
-        info = {'topic': topic, 'posting_list': posting_list}
+        # 分页
+        paginator = Paginator(posting_list, 6)
+        page_num = request.GET.get('page', 1)
+        try:
+            current_page = paginator.page(page_num)
+        except PageNotAnInteger:
+            current_page = paginator.page(1)
+        except EmptyPage:
+            current_page = paginator.page(paginator.num_pages)
+
+        posting_list = current_page.object_list.all()
+        # 获取相邻页码
+        num_list = getSomePage(paginator, current_page.number)
+        info = {'topic': topic, 'posting_list': posting_list, 'current_page': current_page, 'num_list': num_list}
         print info
         return render(request, 'Forum/topic_info.html', info)
     else:
@@ -80,15 +117,15 @@ def create_posting(request, topic_id):
     if request.session.get('user_name', None) and request.method == 'POST':
         user = User.objects.get(user_name=request.session['user_name'])
         content = request.POST.get('content', None)
-        # try:
-        topic = Topic.objects.get(id=topic_id)
-        posting = Posting.objects.create(author=user, content=content, topic=topic)
-        posting.save()
-        print posting
-        print posting.content
-        return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': int(topic_id)}))
-        # except:
-        #     return HttpResponseRedirect(reverse('index'))
+        try:
+            topic = Topic.objects.get(id=topic_id)
+            posting = Posting.objects.create(author=user, content=content, topic=topic)
+            posting.save()
+            print posting
+            print posting.content
+            return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': int(topic_id)}))
+        except:
+            return HttpResponseRedirect(reverse('index'))
     else:
         return HttpResponseRedirect(reverse('login'))
 
@@ -103,8 +140,6 @@ def create_comment(request, posting_id):
              comment.save()
              return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
          except:
-             return HttpResponse('error1')
-             # return HttpResponseRedirect(reverse('login'))
+             return HttpResponseRedirect(reverse('login'))
     else:
-        return HttpResponse('error2')
         return HttpResponseRedirect(reverse('login'))
