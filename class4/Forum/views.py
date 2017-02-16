@@ -150,3 +150,16 @@ def create_comment(request, posting_id):
              return HttpResponseRedirect(reverse('login'))
     else:
         return HttpResponseRedirect(reverse('login'))
+
+def create_like(request, posting_id):
+    if request.session.get('user_name', None) and request.method == 'POST':
+         user = User.objects.get(user_name=request.session['user_name'])
+         try:
+             posting = Posting.objects.get(id=posting_id)
+             posting.like = posting.like + 1
+             posting.save()
+             return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
+         except:
+             return HttpResponseRedirect(reverse('login'))
+    else:
+        return HttpResponseRedirect(reverse('login'))
