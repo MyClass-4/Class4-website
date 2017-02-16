@@ -16,15 +16,7 @@
           prettyPrint();
       });
   </script>
-{#    <script src="{% static 'syntaxhighlighter_3.0.83/scripts/shCore.js' %}"></script>#}
-{#    <script src="{% static 'syntaxhighlighter_3.0.83/scripts/shBrushPython.js' %}"></script>#}
-{#    <link rel="stylesheet" href="{% static 'syntaxhighlighter_3.0.83/styles/shCoreDefault.css' %}">#}
-{#    <script>#}
-{#        SyntaxHighlighter.all();#}
-{#        $(function() {#}
-{#            $('pre').addClass('brush: python');#}
-{#        })#}
-{#    </script>#}
+
 {% endblock %}
 
 
@@ -53,8 +45,9 @@
     <div class="row">
         <div class="col-lg-9">
             <div class="panel panel-default">
-                <table class="table table-bordered">
-                    <thead>
+
+                    <table class="table table-bordered" style="table-layout: fixed;">
+                        <thead>
                         <td class="text-center col-lg-2">
                             <div class="img-responsive">
                                 <p><img class="avater" src="{{ topic.author.avatar.url }}" alt="头像"></p>
@@ -62,7 +55,7 @@
                             <p>{{ topic.author.real_name }}</p>
                             <p class="text-info ">楼主</p>
                         </td>
-                        <td class="col-lg-10">
+                        <td class="col-lg-10 col-md-10">
                             <p class="lead">{{ topic.title }}</p>
                             <div class="text-info thumbnail">{{ topic.content|safe }}</div>
                             <p class="text-right">
@@ -70,69 +63,70 @@
                                 <small>作者：{{ topic.author.real_name }}</small>
                             </p>
                         </td>
-                    </thead>
-                    <tbody>
-                    {% for posting in posting_list %}
-                        <tr>
-                            <td class="text-center">
-                                <div class="img-responsive">
-                                    <p><img class="avater" src="{{ posting.author.avatar.url }}" alt="头像" ></p>
-                                </div>
-                                <p>{{ posting.author.real_name }}</p>
-                            </td>
-                            <td>
-                                <p class="text-right">
-                                    <small>{{ forloop.counter }}楼</small>
-                                </p>
-                                <div class="text-info thumbnail">{{ posting.content|safe }}</div>
-                                <div class="text-right">
-                                    <small>点赞：{{ posting.like }}</small>
-                                    <small>{{ posting.release_time|date:"F j, Y" }}</small>
-                                    <a data-toggle="collapse" href="#collapse{{ forloop.counter }}">
-                                        <small>评论</small>
-                                    </a>
+                        </thead>
+                        <tbody>
+                        {% for posting in posting_list %}
+                            <tr>
+                                <td class="text-center">
+                                    <div class="img-responsive">
+                                        <p><img class="avater" src="{{ posting.author.avatar.url }}" alt="头像" ></p>
+                                    </div>
+                                    <p>{{ posting.author.real_name }}</p>
+                                </td>
+                                <td>
+                                    <p class="text-right">
+                                        <small>{{ forloop.counter }}楼</small>
+                                    </p>
+                                    <div class="text-info thumbnail">{{ posting.content|safe }}</div>
+                                    <div class="text-right">
+                                        <small>点赞：{{ posting.like }}</small>
+                                        <small>{{ posting.release_time|date:"F j, Y" }}</small>
+                                        <a data-toggle="collapse" href="#collapse{{ forloop.counter }}">
+                                            <small>评论</small>
+                                        </a>
 
-                                    <div id="collapse{{ forloop.counter }}" class="comment panel-collapse collapse in">
+                                        <div id="collapse{{ forloop.counter }}" class="comment panel-collapse collapse in">
 
-                                        <script>
-                                            $('#collapse{{ forloop.counter }}').collapse('hide');
-                                        </script>
+                                            <script>
+                                                $('#collapse{{ forloop.counter }}').collapse('hide');
+                                            </script>
 
-                                        <div class="panel panel-default">
-                                            <div class="panel-heading">
-                                                评论
+                                            <div class="panel panel-default">
+                                                <div class="panel-heading">
+                                                    评论
+                                                </div>
+                                                <div class="panel-body text-left">
+                                                    <ul class="list-group">
+                                                        {% for comment in posting.comment_of_posting_set.all %}
+                                                            <li class="list-group-item">
+                                                                {{ comment.author.real_name }}：{{ comment.content|safe }}
+                                                            </li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    <ul class="pagination pull-right" style="margin-bottom: 0px;">
+                                                        <li><a href="#">&laquo;</a></li>
+                                                        <li><a href="#">1</a></li>
+                                                        <li><a href="#">2</a></li>
+                                                        <li><a href="#">3</a></li>
+                                                        <li><a href="#">4</a></li>
+                                                        <li><a href="#">5</a></li>
+                                                        <li><a href="#">&raquo;</a></li>
+                                                    </ul>
+                                                </div>
+                                                <form role="form" class="form-inline panel-footer" action="{% url 'forum_create_comment' posting.id%}" method="post">
+                                                    {% csrf_token %}
+                                                    <input id="myComment" name="myComment" type="text" class="form-control" style="width: 80%"  placeholder="我也来评论">
+                                                    <button class="btn btn-primary form-control">提交</button>
+                                                </form>
                                             </div>
-                                            <div class="panel-body text-left">
-                                                <ul class="list-group">
-                                                   {% for comment in posting.comment_of_posting_set.all %}
-                                                        <li class="list-group-item">
-                                                            {{ comment.author.real_name }}：{{ comment.content|safe }}
-                                                        </li>
-                                                   {% endfor %}
-                                                </ul>
-                                                <ul class="pagination pull-right" style="margin-bottom: 0px;">
-                                                    <li><a href="#">&laquo;</a></li>
-                                                    <li><a href="#">1</a></li>
-                                                    <li><a href="#">2</a></li>
-                                                    <li><a href="#">3</a></li>
-                                                    <li><a href="#">4</a></li>
-                                                    <li><a href="#">5</a></li>
-                                                    <li><a href="#">&raquo;</a></li>
-                                                </ul>
-                                            </div>
-                                            <form role="form" class="form-inline panel-footer" action="{% url 'forum_create_comment' posting.id%}" method="post">
-                                                {% csrf_token %}
-                                                <input id="myComment" name="myComment" type="text" class="form-control" style="width: 80%"  placeholder="我也来评论">
-                                                <button class="btn btn-primary form-control">提交</button>
-                                            </form>
                                         </div>
                                     </div>
-                                </div>
-                            </td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+
                 <div class="panel-footer text-center">
                     <ul class="pagination">
                         <li><a href="#">&laquo;</a></li>

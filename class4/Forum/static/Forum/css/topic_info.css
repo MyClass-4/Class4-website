@@ -17,3 +17,11 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+pre {
+    overflow: auto;
+}
+
+table {
+    table-layout: fixed;
+}
