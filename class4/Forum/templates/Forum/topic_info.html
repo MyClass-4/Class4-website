@@ -154,12 +154,9 @@
                         </div>
                         <div class="panel-body">
                             <ul class="panel-info hot-topic">
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafasssssssssssssssssssfafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
+                                {% for hot_topic in hot_topic_list %}
+                                    <li><a href="{% url 'forum_topic' hot_topic.id %}">{{ hot_topic.title }}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="panel-footer">
