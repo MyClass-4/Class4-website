@@ -21,6 +21,15 @@ def index(request):
     else:
         return HttpResponseRedirect(reverse('login'))
 
+def homework_course_index(request, course_id):
+    if request.session.get('user_name', None):
+        course = Course.objects.get(id=course_id)
+        homework_list = Homework.objects.filter(course=course)
+        course_list = Course.objects.all()
+        info = {'course_info': course, 'homework_list': homework_list, 'course_list': course_list}
+        return render(request, 'Homework/upload_homework_page.html', info)
+    else:
+        return HttpResponseRedirect(reverse('login'))
 
 @csrf_exempt
 def upload_homework(request):
@@ -31,6 +40,9 @@ def upload_homework(request):
         print '==>', files
         course_name = request.POST.get('course_name')
         homework_name = request.POST.get('homework_name')
+
+        print '==>', course_name
+        print '==>', homework_name
 
         course = Course.objects.get(name=course_name)
         user = User.objects.get(user_name=user_name)
@@ -62,14 +74,5 @@ def upload_homework(request):
             print '==> cover homeworkItem successfully'
             return JsonResponse(info)
             # return HttpResponseRedirect(reverse('homework_index'))
-    else:
-        return HttpResponseRedirect(reverse('login'))
-
-
-def homework_info(request, homework_id):
-    if request.session.get('user_name', None):
-        homework = Homework.objects.get(id=homework_id)
-        info = {'homework': homework}
-        return render(request, 'Homework/homework_info.html', info)
     else:
         return HttpResponseRedirect(reverse('login'))

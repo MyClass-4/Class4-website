@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+
+div#homework-panel {
+	margin-left: 30px;
+	height: 230px;
+}
+
+
+button.homework-panel-button {
+	position: absolute;
+	top: 170px;
+}
+
+button#upload-button {
+	left: 260px;
+}
+
+div#sidebar {
+	position: fixed;
+	top: 200px;
+	right: 50px;
+}

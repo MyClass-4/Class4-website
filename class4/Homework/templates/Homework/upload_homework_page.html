@@ -6,85 +6,150 @@
 
 {% block css_js_static %}
 {% load staticfiles %}
-<link type="text/css" rel="stylesheet" href="{% static 'Homework/css/upload_homework_page.css' %}" />
+<link type="text/css" rel="stylesheet" href="{% static 'Homework/css/homework_index.css' %}" />
 <script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
-<script type="application/javascript" src="{% static 'Homework/js/upload_homework.js' %}"></script>
+<script type="application/javascript" src="{% static 'Homework/js/homework_index.js' %}"></script>
 {% endblock %}
 
 {% block content %}
-	<div id="title">
-  	作业概览
-  </div>
+	<div class="row row-offcanvas row-offcanvas-right">
 
-    <div id="homework_container">
-			<ul id="homework_board">
+		<div class='col-12 col-md-9'>
+			<div class='jumbotron'>
+				{% if course_info %}
+				<h1>{{course_info.name}}</h1>
+				{% else %}
+				<h1>所有作业</h1>
+				{% endif %}
+			</div>
+			<div class='row'>
 				{% for homework in homework_list %}
-					<li class="homework">
-						<div class="homework_title">
-							{{homework.course.name}}&nbsp&nbsp{{homework.name}}
-						</div>
-						<div class="homework_detail">
-							{{homework.detail}}
-						</div>
-						<div class="homework_state">
-							<span class="is_over">
-								{% if is_over %}
-									已结束
-								{% else %}
-									未结束
-								{% endif %}
-							</span>
-								<!--查看详情跳转到详情以及评论页面-->
+				<div class='panel panel-default col-md-5' id='homework-panel'>
+					<div class='panel-body'>
+						<div class='col-10 col-md-10'>
+							<h3>{{homework.course.name}}|{{homework.name}}</h3>
+							<p>{{homework.detail | truncatewords:30}}</p>
 
-								<a class="to_comment" href="{% url 'homework_info' homework.id %}">查看详情</a>
-								<span class="upload click_able">可提交</span>
-							</div>
-						</li>
+								<button class='btn btn-default btn-sm homework-panel-button' data-toggle='modal'
+									data-target='#detailModal{{homework.id}}'>查看详情 &raquo;</button>
+
+									<!-- 作业详情模态框 -->
+								<div class='modal fade' id='detailModal{{homework.id}}' tabindex="-1" rol='dialog'
+									aria-labelledby='detailModalLabel' aria-hidden='true'>
+									<div class='modal-dialog'>
+										<div class='modal-content'>
+											<div class='modal-header'>
+												<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+												<h4 class='modal-title' id='detailModalLable'>{{homework.course.name}}|{{homework.name}}</h4>
+											</div>
+											<div class='modal-body'>
+												<table class='table'>
+													<tbody>
+														<tr>
+															<td>课程</td>
+															<td>{{homework.course.name}}</td>
+														</tr>
+														<tr>
+															<td>作业名称</td>
+															<td>{{homework.name}}</td>
+														</tr>
+														<tr>
+															<td>备注</td>
+															<td>{{homework.detail}}</td>
+														</tr>
+														<tr>
+															<td>发布时间</td>
+															<td>{{homework.release_time | date:"Y-m-d"}}</td>
+														</tr>
+														<tr>
+															<td>截止时间</td>
+															<td>{{homework.deadline | date:"Y-m-d"}}</td>
+														</tr>
+														<tr>
+															<td>作业状态</td>
+															<td>
+																{% if homework.is_over %}
+																	已结束
+																{% else %}
+																	未结束
+																{% endif %}
+															</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>
+											<div class='modal-footer'>
+												<button type='button' class='btn btn-default' data-dismiss='modal'>关闭</button>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<button type='button' class='btn btn-primary btn-sm homework-panel-button'
+								 id='upload-button' title='提交作业' data-toggle='modal' data-target='#homeworkModal{{homework.id}}'>
+									<span class='glyphicon glyphicon-upload' aria-hidden='true'></span>
+								</button>
+
+									<!-- 作业模态框 -->
+								<div class='modal fade' id='homeworkModal{{homework.id}}' tabindex="-1" role='dialog'
+								 	aria-labelledby='homeworkLabel' aria-hidden='true'>
+									<div class='modal-dialog'>
+										<div class='modal-content'>
+											<div class='modal-header'>
+												<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
+												<h4 class='modal-title' id='homeworkModalLable'>{{homework.course.name}}|{{homework.name}}</h4>
+											</div>
+											<div class='modal-body'>
+												<form class='form-horizontal' id='homework_form' role='form' action="upload_homework" method="post" enctype="multipart/form-data">
+													{% csrf_token %}
+													<div class='form-group'>
+														<label for='course_name' class='col-sm-2 control-label'>课程名称</label>
+														<div class='col-sm-6'>
+															<!-- <input type='text' class='form-control' value='{{homework.course.name}}' disabled=true> -->
+															<p class='form-control-static' id='course_name'>{{homework.course.name}}</p>
+														</div>
+													</div>
+													<div class='form-group'>
+														<label for='homework_name' class='col-sm-2 control-label'>作业名称</label>
+														<div class='col-sm-6'>
+															<!-- <input type='text' class='form-control' value='{{homework.name}}' disabled=true> -->
+															<p class='form-control-static' id='homework_name'>{{homework.name}}</p>
+														</div>
+													</div>
+													<div class='form-group'>
+														<label for='homework_file' class='col-sm-2 control-label'>作业文件</label>
+														<div class='col-sm-6'>
+															<input type='file' name='homework_file' id='homework_file'>
+															<span class='help-block' id='hint'></span>
+														</div>
+													</div>
+													<div class='modal-footer'>
+														<button type='button' class='btn btn-default' data-dismiss='modal'>关闭</button>
+														<input type='submit' class='btn btn-primary' value='提交'>
+													</div>
+												</form>
+											</div>
+										</div>
+									</div>
+								</div>
+
+						</div>
+					</div>
+				</div>
 				{% endfor %}
-			</ul>
-    </div>
+			</div>
+		</div>
 
-    <div id="upload_homework" class="hide_div">
-    	<div id="upload_homework_background">
-        </div>
+		<!-- sidebar -->
+		<div class='col-xs-6 col-sm-3 sidebar-offcanvas' id='sidebar'>
+			<div class='list_group'>
+				<a href="{% url 'homework_index' %}" class='list-group-item active'>所有课程</a><!--怎么控制active????-->
+				{% for course in course_list %}
+				<a href="{% url 'homework_course_index' course.id %}" class='list-group-item' id='course_link{{course.id}}'>{{course.name}}</a>
+				{% endfor %}
+			</div><!--/.listgroup-->
+		</div><!--/sidebar-canvas-->
+	</div><!--/row-->
 
-    	<form id="homework_form" action="upload_homework" method="post" enctype="multipart/form-data">
-					{% csrf_token %}
-        	<div class="form_content">
-            	<label for="course_name">课程</label>
-                <select id="courses_select" name="course_name">
-                	<!-- <option>数电</option> -->
-									{% for course in course_list %}
-										<option value="{{course.name}}">{{course.name}}</option>
-									{% endfor %}
-                </select>
-            </div>
-            <div class="form_content">
-            	<label for="homework_name">作业</label>
-                <select id="homework_select" name="homework_name">
-                	<!-- <option>第14周作业</option> -->
-									{% for homework in homework_list %}
-										{% if not homework.is_over %}
-											<option>{{homework.name}}
-										{% endif %}
-									{% endfor %}
-                </select>
-            </div>
-            <div class="form_content">
-                <label for="file">文件上传</label>
-                <input type="file" name="homework_file" id="homework_file">
-								<span id="hint"></span>
-            </div>
-            <div class="form_content">
-            	<span>状态：</span>
-                <span id="upload_state">未提交</span>
-            </div>
-            <div class="form_content">
-                <label for="submit"></label>
-                <input type="submit" name="submit" id="submit" value="提交">
-            </div>
-        </form>
-    </div>
-</div>
 
 {% endblock %}
