@@ -100,7 +100,7 @@
 												<h4 class='modal-title' id='homeworkModalLable'>{{homework.course.name}}|{{homework.name}}</h4>
 											</div>
 											<div class='modal-body'>
-												<form class='form-horizontal' id='homework_form' role='form' action="upload_homework" method="post" enctype="multipart/form-data">
+												<form class='form-horizontal' role='form' action="upload_homework">
 													{% csrf_token %}
 													<div class='form-group'>
 														<label for='course_name' class='col-sm-2 control-label'>课程名称</label>
@@ -116,6 +116,8 @@
 															<p class='form-control-static' id='homework_name'>{{homework.name}}</p>
 														</div>
 													</div>
+												</form>
+												<form class='form-horizontal' id='homework_form' role='form' action"upload_homework" enctype="multipart/form-data">
 													<div class='form-group'>
 														<label for='homework_file' class='col-sm-2 control-label'>作业文件</label>
 														<div class='col-sm-6'>

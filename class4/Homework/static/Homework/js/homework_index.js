@@ -11,7 +11,7 @@ var uploadfile = function() {
 		var formdata = new FormData($('#homework_form')[0]);
 		formdata.append('course_name', $('#course_name').html());
 		formdata.append('homework_name', $('#homework_name').html());
-		formdata.set('homework_file', input.files[0]);
+		// formdata.set('homework_file', input.files[0]);
 		$.ajax({
 			method: "POST",
 			url: "upload_homework",
