@@ -73,7 +73,8 @@
                 <div class="panel-footer text-center">
                     <ul class="pagination">
                         {% if current_page.has_previous %}
-                            <li><a href="#">&laquo;</a></li>
+                            <li><a href="?page={{ 1 }}">首页</a></li>
+                            <li><a href="?page={{ current_page.previous_page_number }}">&laquo;</a></li>
                         {% endif %}
                         {% for num in num_list %}
                             {% ifequal num current_page.number %}
@@ -83,7 +84,8 @@
                             {% endifequal %}
                         {% endfor %}
                         {% if current_page.has_next %}
-                            <li><a href="#">&raquo;</a></li>
+                            <li><a href="?page={{ current_page.next_page_number }}">&raquo;</a></li>
+                            <li><a href="?page={{ last_page_num }}">尾页</a></li>
                         {% endif %}
                     </ul>
                 </div>
@@ -100,12 +102,9 @@
                         </div>
                         <div class="panel-body">
                             <ul class="panel-info hot-topic">
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafasssssssssssssssssssfafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
-                                <li><a href="">absfdsfafafafaf</a></li>
+                                {% for hot_topic in hot_topic_list %}
+                                    <li><a href="{% url 'forum_topic' hot_topic.id %}">{{ hot_topic.title }}</a></li>
+                                {% endfor %}
                             </ul>
                         </div>
                         <div class="panel-footer">

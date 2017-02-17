@@ -12,22 +12,28 @@ import os
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 # Create your views here.
 
+def getHotTopics(Topic):
+    hot_topic_list = list(Topic.objects.order_by('postingOfTopic').distinct())
+    hot_topic_list = hot_topic_list[0:5]
+    return  hot_topic_list
+
 def getSomePage(paginator, current_num):
     num_list = list(paginator.page_range)
-    if current_num - 3 < 0:
-        if current_num + 3 < num_list[-1]:
-            return num_list[0:current_num + 3]
+    if current_num - 4 < 0:
+        if current_num + 4 < num_list[-1]:
+            return num_list[0:6]
         else:
             return num_list[0:]
     else:
-        if current_num + 3 < num_list[-1]:
+        if current_num + 3 <= num_list[-1]:
             return num_list[current_num - 3:current_num + 3]
         else:
-            return num_list[current_num - 3:]
+            return num_list[num_list[-1] - 6:]
 
 def index(request):
     if request.session.get('user_name', None):
         topic_list = Topic.objects.all()
+        hot_topic_list = getHotTopics(Topic)
         # 分页
         paginator = Paginator(topic_list, 6);
         page_num = request.GET.get('page', 1)
@@ -40,7 +46,7 @@ def index(request):
 
         topic_list = current_page.object_list.all()
         num_list = getSomePage(paginator, current_page.number)
-        info = {'topic_list': topic_list, 'num_list': num_list, 'current_page':current_page}
+        info = {'topic_list': topic_list, 'num_list': num_list, 'current_page':current_page, 'last_page_num':paginator.num_pages, 'hot_topic_list':hot_topic_list}
         return render(request, 'Forum/forum_index.html', info)
     else:
         return HttpResponseRedirect(reverse('login'))
@@ -50,6 +56,7 @@ def topic_info(request, topic_id):
     if request.session.get('user_name', None):
         topic = Topic.objects.get(id=topic_id)
         posting_list = topic.posting_of_topic_set.order_by('release_time')
+        hot_topic_list = getHotTopics(Topic)
         # 分页
         paginator = Paginator(posting_list, 6)
         page_num = request.GET.get('page', 1)
@@ -63,7 +70,7 @@ def topic_info(request, topic_id):
         posting_list = current_page.object_list.all()
         # 获取相邻页码
         num_list = getSomePage(paginator, current_page.number)
-        info = {'topic': topic, 'posting_list': posting_list, 'current_page': current_page, 'num_list': num_list}
+        info = {'topic': topic, 'posting_list': posting_list, 'current_page': current_page, 'num_list': num_list, 'hot_topic_list':hot_topic_list}
         print info
         return render(request, 'Forum/topic_info.html', info)
     else:
@@ -138,6 +145,19 @@ def create_comment(request, posting_id):
              comment_content = request.POST.get('myComment')
              comment = Comment.objects.create(author=user, posting=posting, content=comment_content)
              comment.save()
+             return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
+         except:
+             return HttpResponseRedirect(reverse('login'))
+    else:
+        return HttpResponseRedirect(reverse('login'))
+
+def create_like(request, posting_id):
+    if request.session.get('user_name', None) and request.method == 'POST':
+         user = User.objects.get(user_name=request.session['user_name'])
+         try:
+             posting = Posting.objects.get(id=posting_id)
+             posting.like = posting.like + 1
+             posting.save()
              return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
          except:
              return HttpResponseRedirect(reverse('login'))
