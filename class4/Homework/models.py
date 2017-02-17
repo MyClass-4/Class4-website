@@ -27,7 +27,7 @@ class Homework(models.Model):
     name = models.CharField('作业名称', max_length=250, blank=False, default='作业')
     detail = models.CharField('备注', max_length=500, blank=True, default='备注')
     is_over = models.BooleanField('状态', default=False)
-    # finished_number = models.
+    finished_number = models.IntegerField('提交人数', default=0)
     release_time = models.DateField('发布时间', auto_now_add=True)
     deadline = models.DateField('截止时间', auto_now=False, auto_now_add=False)
 

@@ -53,6 +53,8 @@ def upload_homework(request):
             # 初次保存作业
             homework_item.homework_file = files
             homework_item.save()
+            homework.finished_number += 1
+            homework.save()
             info = {}
             info['success'] = 1
             info['msg'] = ''
@@ -68,6 +70,8 @@ def upload_homework(request):
 
             homework_item.homework_file = files
             homework_item.save()
+            homework.finished_number += 1
+            homework.save()
             info = {}
             info['success'] = 1
             info['msg'] = '覆盖文件成功'
