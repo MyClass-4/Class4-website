@@ -82,9 +82,13 @@
                                         <small>
                                             <form role="form" id="new-like" action="{% url 'forum_create_like' posting.id %}" enctype="multipart/form-data" method="post">
                                                 {% csrf_token %}
-                                                <input type="submit" value="点赞"> ：{{ posting.like }} {{ posting.release_time|date:"F j, Y" }}
+                                                {% if user in posting.like.all %}
+                                                  <span class='help-block'>已点赞</span>
+                                                {% else %}
+                                                  <input type="submit" class='btn btn-default btn-sm' value="点赞"> ：{{ posting.like.all.count }} {{ posting.release_time|date:"F j, Y" }}
+                                                {% endif %}
                                                 <a data-toggle="collapse" href="#collapse{{ forloop.counter }}">
-                                            <small>评论</small>
+                                            <small>评论({{posting.comment_of_posting_set.all.count}})</small>
                                         </a>
                                             </form>
                                         </small>

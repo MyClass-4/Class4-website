@@ -67,10 +67,11 @@ def topic_info(request, topic_id):
         except EmptyPage:
             current_page = paginator.page(paginator.num_pages)
 
+        user = User.objects.get(user_name=request.session['user_name'])
         posting_list = current_page.object_list.all()
         # 获取相邻页码
         num_list = getSomePage(paginator, current_page.number)
-        info = {'topic': topic, 'posting_list': posting_list, 'current_page': current_page, 'num_list': num_list, 'hot_topic_list':hot_topic_list}
+        info = {'topic': topic, 'posting_list': posting_list, 'current_page': current_page, 'num_list': num_list, 'hot_topic_list': hot_topic_list, 'user': user}
         print info
         return render(request, 'Forum/topic_info.html', info)
     else:
@@ -156,8 +157,9 @@ def create_like(request, posting_id):
          user = User.objects.get(user_name=request.session['user_name'])
          try:
              posting = Posting.objects.get(id=posting_id)
-             posting.like = posting.like + 1
-             posting.save()
+             if posting.like.filter(id=user.id).count() == 0:
+                 posting.like.add(user)
+                 posting.save()
              return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
          except:
              return HttpResponseRedirect(reverse('login'))

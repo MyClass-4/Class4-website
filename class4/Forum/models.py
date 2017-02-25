@@ -28,7 +28,8 @@ class Posting(models.Model):
     topic = models.ForeignKey(Topic, verbose_name='主题', related_name='posting_of_topic_set', \
                               related_query_name='postingOfTopic', null=False)
     content = models.TextField('内容', default='')
-    like = models.IntegerField('点赞', default=0)
+    like = models.ManyToManyField(User, verbose_name='点赞', related_name='posting_like_of_user', \
+                                    related_query_name='likeOfPosting')
     release_time = models.DateField('发布时间', auto_now_add=True)
 
     def __unicode__(self):
@@ -48,7 +49,8 @@ class Comment(models.Model):
     posting = models.ForeignKey(Posting, verbose_name='帖子', related_name='comment_of_posting_set', \
                                 related_query_name='commentOfPosting', null=False)
     content = models.TextField('内容', default='')
-    like = models.IntegerField('点赞', default=0)
+    like = models.ManyToManyField(User, verbose_name='点赞', related_name='comment_like_of_user', \
+                                    related_query_name='likeOfComment')
     release_time = models.DateField('发布时间', auto_now_add=True)
 
     def __unicode__(self):
@@ -58,5 +60,3 @@ class Comment(models.Model):
         verbose_name = '评论'
         verbose_name_plural = '评论'
         ordering = ['-release_time']
-
-
