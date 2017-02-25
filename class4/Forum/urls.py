@@ -8,5 +8,6 @@ urlpatterns = [
     url(r'^new_posting/(?P<topic_id>\d+)$', Forum_view.create_posting, name='forum_create_posting'),
     url(r'new_comment/(?P<posting_id>\d+)&', Forum_view.create_comment, name='forum_create_comment'),
     url(r'^uploadImg$', Forum_view.uploadImg, name='forum_uploadImg'),
-    url(r'new_like/(?P<posting_id>\d+)&', Forum_view.create_like, name='forum_create_like'),
+    url(r'new_posting_like/(?P<posting_id>\d+)&', Forum_view.create_posting_like, name='forum_create_posting_like'),
+    url(r'new_comment_like/(?P<comment_id>\d+)&', Forum_view.create_comment_like, name='forum_create_comment_like'),
 ]

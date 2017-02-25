@@ -80,7 +80,7 @@
                                     <div class="text-info thumbnail">{{ posting.content|safe }}</div>
                                     <div class="text-right">
                                         <small>
-                                            <form role="form" id="new-like" action="{% url 'forum_create_like' posting.id %}" enctype="multipart/form-data" method="post">
+                                            <form role="form" id="new-like" action="{% url 'forum_create_posting_like' posting.id %}" enctype="multipart/form-data" method="post">
                                                 {% csrf_token %}
                                                 {% if user in posting.like.all %}
                                                   <span class='help-block'>已点赞</span>

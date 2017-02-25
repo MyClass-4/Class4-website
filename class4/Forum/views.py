@@ -174,7 +174,7 @@ def create_comment(request, posting_id):
     else:
         return HttpResponseRedirect(reverse('login'))
 
-def create_like(request, posting_id):
+def create_posting_like(request, posting_id):
     if request.session.get('user_name', None) and request.method == 'POST':
          user = User.objects.get(user_name=request.session['user_name'])
          try:
@@ -184,6 +184,20 @@ def create_like(request, posting_id):
                  posting.save()
              return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
          except:
-             return HttpResponseRedirect(reverse('login'))
+             return HttpResponseRedirect(reverse('index'))
+    else:
+        return HttpResponseRedirect(reverse('login'))
+
+def create_comment_like(request, comment_id):
+    if request.session.get('user_name', None) and request.method == 'POST':
+        user = User.objects.get(user_name=request.session['user_name'])
+        try:
+            posting = Comments.objects.get(id=comment_id)
+            if comment.like.filter(id=user.id).count() == 0:
+                comment.like.add(user)
+                comment.save()
+            return HttpResponseRedirect(reverse('forum_topic', kwargs={'topic_id': posting.topic.id}))
+        except:
+            return HttpResponseRedirect(reverse('index'))
     else:
         return HttpResponseRedirect(reverse('login'))
