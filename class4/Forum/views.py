@@ -10,6 +10,7 @@ import datetime
 import json
 import os
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.db.models import Q
 # Create your views here.
 
 def getHotTopics(Topic):
@@ -32,7 +33,27 @@ def getSomePage(paginator, current_num):
 
 def index(request):
     if request.session.get('user_name', None):
-        topic_list = Topic.objects.all()
+        if request.method == 'POST':
+            key_word = request.POST.get('key_word', '')
+            option = request.POST.get('option', 'title')
+            key_word_list = key_word.split(' ')
+            q = Q()
+            if option == 'title':
+                for key in key_word_list:
+                    q.add(Q(title__icontains=key), Q.OR)
+            elif(option == 'author'):
+                for key in key_word_list:
+                    q.add(Q(author__real_name=key), Q.OR)
+            elif(option == 'content'):
+                for key in key_word_list:
+                    q.add(Q(content__icontains=key), Q.OR)
+            else:
+                for key in key_word_list:
+                    q.add(Q(title__icontains=key), Q.OR)
+            topic_list = Topic.objects.filter(q)
+        else:
+            topic_list = Topic.objects.all()
+
         hot_topic_list = getHotTopics(Topic)
         # 分页
         paginator = Paginator(topic_list, 6);
@@ -50,6 +71,7 @@ def index(request):
         return render(request, 'Forum/forum_index.html', info)
     else:
         return HttpResponseRedirect(reverse('login'))
+
 
 
 def topic_info(request, topic_id):
