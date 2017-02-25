@@ -6,7 +6,7 @@
   {% endblock %}
   {% load staticfiles %}
   <link rel="stylesheet" type="text/css" href="{% static 'layout/css/navigator.css' %}">
-  <link rel="stylesheet" type="text/css" href="{% static 'layout/css/header.css">
+  <link rel="stylesheet" type="text/css" href="{% static 'layout/css/header.css' %}">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
@@ -28,9 +28,9 @@
   	  	  <li class="dropdown">
   	  	    <button id="feature" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">功能菜单<span class="caret"></span></button>
   	  	    <ul class="dropdown-menu">
-  	  	      <li role="separator" class="divider"></li>
   	  	      <li><a href="{% url 'forum_index' %}">论坛</a></li>
               <li><a href="{% url 'homework_index' %}">作业</a></li>
+              <li role="separator" class="divider"></li>
               <li><a href="{% url 'logout' %}">登出</a></li>
   	  	    </ul>
   	  	  </li>
@@ -43,9 +43,6 @@
   {% endblock %}
 
   <div class="container">
-    <div class="row">
-        <div style="height:80px"></div>
-    </div>
       {% block content %}
       {% endblock %}
   </div>

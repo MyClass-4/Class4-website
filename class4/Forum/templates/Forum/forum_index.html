@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 
 {% block title %}
+<title>论坛首页</title>
 {% endblock %}
 
 {% block css_js_static %}
 {% load staticfiles %}
-<title>论坛首页</title>
+<link rel="stylesheet" href="{% static 'Forum/css/forum_index.css' %}" type="text/css">
+<script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+<link rel="stylesheet" href="{% static 'kindeditor-4.1.10/plugins/code/prettify.css' %}">
+<script charset="utf-8" src="{% static 'kindeditor-4.1.10/plugins/code/prettify.js' %}"></script>
+{% endblock %}
+
+{% block header %}
+{% load staticfiles %}
+<div class="jumbotron header" id="forumPage">
+  <div class="container">
+    <p class="middle"><img src="{% static 'layout/images/forum_logo.png' %}"></p>
+    <h1 class="middle">Page for Forum</h1>  
+    <p class="middle">You can start your own topic here, or take part in others' topic and express your own opinion, exchanging ideas with others.</p>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}
-    <link rel="stylesheet" href="{% static 'Forum/css/forum_index.css' %}" type="text/css">
-    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
-    <link rel="stylesheet" href="{% static 'kindeditor-4.1.10/plugins/code/prettify.css' %}">
-    <script charset="utf-8" src="{% static 'kindeditor-4.1.10/plugins/code/prettify.js' %}"></script>
     <script>
        window.onload = function() {
            prettyPrint();
@@ -45,7 +56,7 @@
             </div>
         </nav>
     </div>
-    <div class="row bg-info">
+    <div class="row bg-info" id="forum_content">
         <div class="col-lg-9 col-md-9">
             <div class="panel panel-default">
                 <div class="panel-heading">
@@ -98,9 +109,8 @@
             </div>
         </div>
 
-        <div class="col-lg-3">
+        <div class="col-lg-3" id="hot_topic">
             <div data-spy="affix">
-                <div style="height:20px"></div>
                 <div class="col-lg-10">
                     <div class="panel panel-default">
                         <div class="panel-heading">

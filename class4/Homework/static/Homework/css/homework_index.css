@@ -16,8 +16,12 @@ button#upload-button {
 	left: 260px;
 }
 
+div#homeworkArea {
+	position: relative;
+}
+
 div#sidebar {
-	position: fixed;
+	position: absolute;
 	top: 200px;
-	right: 50px;
+	right: 0px;
 }

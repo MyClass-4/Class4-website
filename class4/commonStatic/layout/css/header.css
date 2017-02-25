@@ -1,11 +1,12 @@
 div.header {
 	font-size: 30px;
-	height: 500px;
+	height: 400px;
+	color: white;
 }
 
 .header img {
+	margin-top: 5%;
 	height: 100px;
-	width: 100px;
 }
 
 .middle {
@@ -20,5 +21,15 @@ div.header {
 }
 
 #homeworkPage {
-	
+	background: -webkit-linear-gradient(left, #0645f5, #02f7f7);
+    background: -o-linear-gradient(left, #0645f5, #02f7f7);
+    background: -moz-linear-gradient(left, #0645f5, #02f7f7);
+    background: linear-gradient(left, #0645f5, #02f7f7);
+}
+
+#forumPage {
+	background: -webkit-linear-gradient(left, #f7082d, #f1fb0a);
+    background: -o-linear-gradient(left, #f7082d, #f1fb0a);
+    background: -moz-linear-gradient(left, #f7082d, #f1fb0a);
+    background: linear-gradient(left, #f7082d, #f1fb0a);
 }
