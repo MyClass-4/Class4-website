@@ -6,6 +6,7 @@
   {% endblock %}
   {% load staticfiles %}
   <link rel="stylesheet" type="text/css" href="{% static 'layout/css/navigator.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'layout/css/header.css">
   <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
   <script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
   <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
@@ -38,14 +39,15 @@
   	</div>
   </nav>
 
+  {% block header %}
+  {% endblock %}
+
   <div class="container">
     <div class="row">
         <div style="height:80px"></div>
     </div>
       {% block content %}
       {% endblock %}
-  	  <!-- <h1>Welcome to the website of Class 4.</h1>
-  	  <p>This is the website for the members of Class 4.You can hand up your homework here, gain some messages of our academy, and more other things.</p> -->
   </div>
 </body>
 </html>

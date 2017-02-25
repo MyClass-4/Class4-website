@@ -5,8 +5,16 @@
 
 {% block css_js_static %}
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
-<!-- <script type="text/javascript" src="templates/User/index.js"></script> -->
-<!-- <link rel='stylesheet' href='style.css' /> -->
+{% endblock %}
+
+{% block header %}
+<div class="jumbotron header" id="userPage">
+  <div class="container">
+    <p class="middle"><img src="{% static 'layout/images/class4_brand.png' %}"></p>
+  	<h1 class="middle">Welcome to the website of Class 4.</h1>
+  	<p class="middle">This is the website for the members of Class 4.You can hand up your homework here, gain some messages of our academy, and do more other things.</p>
+  </div>
+</div>
 {% endblock %}
 
 {% block content %}

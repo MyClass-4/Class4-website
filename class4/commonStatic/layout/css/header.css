@@ -1,0 +1,24 @@
+div.header {
+	font-size: 30px;
+	height: 500px;
+}
+
+.header img {
+	height: 100px;
+	width: 100px;
+}
+
+.middle {
+	text-align: center;
+}
+
+#userPage {
+	background: -webkit-linear-gradient(left, rgb(13,5,43), rgb(100,47,80));
+    background: -o-linear-gradient(left, rgb(13,5,43), rgb(100,47,80));
+    background: -moz-linear-gradient(left, rgb(13,5,43), rgb(100,47,80));
+    background: linear-gradient(left, rgb(13,5,43), rgb(100,47,80));
+}
+
+#homeworkPage {
+	
+}
