@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 
 {% block title %}
-<title>作业</title>
+<title>作业提交</title>
 {% endblock %}
 
 {% block css_js_static %}
 {% load staticfiles %}
 <link type="text/css" rel="stylesheet" href="{% static 'Homework/css/homework_index.css' %}" />
-<script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
+<!--<script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>-->
 <script type="application/javascript" src="{% static 'Homework/js/homework_index.js' %}"></script>
 {% endblock %}
 
+{% block header %}
+{% load staticfiles %}
+<div class="jumbotron header" id="homeworkPage">
+  <div class="container">
+    <p class="middle"><img src="{% static 'layout/images/homework_logo.png' %}"></p>
+  	<h1 class="middle">Page for homework</h1>
+  	<p class="middle">You can checkout the information of our homeworks here, and hand up your homework.</p>
+  </div>
+</div>
+{% endblock %}
+
 {% block content %}
-	<div class="row row-offcanvas row-offcanvas-right">
+	<div class="row row-offcanvas row-offcanvas-right" id="homeworkArea">
 
 		<div class='col-12 col-md-9'>
 			<div class='jumbotron'>
