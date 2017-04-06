@@ -26,6 +26,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'Forum/', include('Forum.urls')),
     url(r'^Homework/', include('Homework.urls')),
+    url(r'^WebScraping/', include('WebScraping.urls')),
 ]
 
 urlpatterns += url(r'^media/(?P<path>.*)$', django.views.static.serve, {'document_root': settings.MEDIA_ROOT}),
