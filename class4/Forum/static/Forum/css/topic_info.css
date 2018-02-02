@@ -1,0 +1,27 @@
+
+.avater {
+    height: 80px;
+    width: 80px;
+}
+
+
+#posting_editor {
+    min-height: 300px;
+}
+
+.hot-topic ul {
+    list-style: none;
+}
+
+.hot-topic li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+pre {
+    overflow: auto;
+}
+
+table {
+    table-layout: fixed;
+}

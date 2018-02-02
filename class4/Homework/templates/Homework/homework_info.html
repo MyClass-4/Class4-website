@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>作业详情</title>
+{% endblock %}
+
+{% block content %}
+    <h1>作业详情</h1>
+
+    <div>
+      <p>课程：{{homework.course.name}}<br />
+        作业名称：{{homework.name}}<br />
+        备注：{{homework.detail}}<br />
+        已结束：{{homework.is_over}}<br />
+        发布时间：{{homework.release_time}}<br />
+        截止时间：{{homework.deadline}}<br />
+      </p>
+{% endblock %}

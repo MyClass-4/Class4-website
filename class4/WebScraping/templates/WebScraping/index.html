@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+
+{% block title %}
+
+{% endblock %}
+
+{% block css_js_static %}
+	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
+	<script type="text/javascript" src="{% static 'WebScraping/js/index.js' %}"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col-lg-offset-2 col-lg-8">
+		<form role='role' class='form-horizontal' id='search-form' action="" method="post">
+			{% csrf_token %}
+			<input type="text" name="search_item" class="form-control">
+			<button class="btn btn-primary">提交</button>
+		</form>
+	</div>
+</div>
+<div class="row">
+	<div class="col-lg-offset-2 col-lg-8">
+		<div class="panel panel-primary">
+			<div class="panel-heading">
+				<h3 class="panel-title text-center panel-success">
+					翻译
+				</h3>
+			</div>
+			<div class='panel-body'>
+				<div>
+					<h3 class="lead">
+						{{search_item}}
+					</h3>
+					<hr>
+					<h2 id="result" class="text-info">
+						{{search_result}}
+					</h2>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

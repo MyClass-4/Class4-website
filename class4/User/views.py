@@ -2,6 +2,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.core.urlresolvers import reverse
+from django.views.decorators.csrf import csrf_exempt
 
 import hashlib
 from User.models import User
@@ -12,21 +13,25 @@ def encry(password):
     p.update(password)
     return p.hexdigest()
 
+@csrf_exempt
 def login(request):
     if request.method == 'POST':
         # 教程上有个get_object_or_404的用法，这里应该也可以用
-        user_name = request.POST.get('user_name', None)
+        user_name = request.POST.get('studentNumber', None)
         password = request.POST.get('password', None)
         password = encry(password)
 
+        print user_name
+        print password
+
         try:
             user = User.objects.get(user_name = user_name, password = password)
+            print '==>> login success'
             request.session['user_name'] = user_name
-            # ?? reverse redirect
-            return HttpResponseRedirect(reverse('index'))
+            return JsonResponse({'state': 1, 'url': '/'})
         except:
-            # 这里修改成返回JSON信息 ********************************************
-            return HttpResponse('login error')
+            print '==>> login false'
+            return JsonResponse({'state': 0})
     else:
         return render(request, 'User/login.html')
 
@@ -66,29 +71,29 @@ def index(request):
 #         return render(request, 'User/register.html')
 
 # change profile
-def profile(request):
-    if request.method == 'POST':
-        # 不允许用户修改用户名，因为用户名就是unique tag
-        password = request.POST.get('password')
-        password_twice = request.POST.get('password_twice')
-        if password != password_twice:
-            return HttpResponse("两次输入的密码不一致")
-        password = encry(password)
-        user = User.objects.get(user_name = request.session['user_name'])
-        user.password = password
-        user.sign = request.POST.get('sign')
-        user.avatar = request.FILES.get('avatar')
-        user.save()
-        return HttpResponse("修改成功")
-    else:
-        user = User.objects.get(user_name = request.session['user_name'])
-        return render(request, 'User/profile.html', { 'user': user })
-
-def changeAvatar(request):
-    if request.method == 'POST':
-        user = User.objects.get(user_name = request.session['user_name'])
-        user.avatar = request.FILES.get('avatar')
-        user.save()
-        return HttpResponse("修改成功")
-    else:
-        return render(request, 'User/changeavatar.html')
+# def profile(request):
+#     if request.method == 'POST':
+#         # 不允许用户修改用户名，因为用户名就是unique tag
+#         password = request.POST.get('password')
+#         password_twice = request.POST.get('password_twice')
+#         if password != password_twice:
+#             return HttpResponse("两次输入的密码不一致")
+#         password = encry(password)
+#         user = User.objects.get(user_name = request.session['user_name'])
+#         user.password = password
+#         user.sign = request.POST.get('sign')
+#         user.avatar = request.FILES.get('avatar')
+#         user.save()
+#         return HttpResponse("修改成功")
+#     else:
+#         user = User.objects.get(user_name = request.session['user_name'])
+#         return render(request, 'User/profile.html', { 'user': user })
+#
+# def changeAvatar(request):
+#     if request.method == 'POST':
+#         user = User.objects.get(user_name = request.session['user_name'])
+#         user.avatar = request.FILES.get('avatar')
+#         user.save()
+#         return HttpResponse("修改成功")
+#     else:
+#         return render(request, 'User/changeavatar.html')

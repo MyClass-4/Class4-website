@@ -1,0 +1,15 @@
+
+#topic-content {
+    max-height: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.hot-topic ul {
+    list-style: none;
+}
+
+.hot-topic li {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

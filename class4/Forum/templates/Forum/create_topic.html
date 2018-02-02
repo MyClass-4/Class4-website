@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}
+        <title>新建话题</title>
+{% endblock %}
+
+{% block css_js_static %}
+{% load staticfiles %}
+  <link rel="stylesheet" href="{%  static 'Forum/css/create_topic.css' %}" type="text/css">
+
+   <script charset="utf-8" src="{% static 'kindeditor-4.1.10/kindeditor.js' %}"></script>
+  <script charset="utf-8" src="{% static 'kindeditor-4.1.10/lang/zh_CN.js' %}"></script>
+  <script>
+      KindEditor.ready(function(K) {
+          window.editor = K.create('#topic_editor', {
+                uploadJson: '{% url 'forum_uploadImg' %}',
+                // form data name="imgFiel"
+          });
+
+      });
+  </script>
+{% endblock %}
+
+{% block content %}
+    <div class="col-lg-10 col-lg-offset-1 bg-info" >
+        <form role="form"  action="" enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <input class="form-control" id="topic-id" type="text" name="title" placeholder="标题">
+                <hr>
+                <textarea id="topic_editor" name="content" class="form-control"></textarea>
+                <input type="submit" class="btn btn-primary" value="发布帖子">
+            </div>
+        </form>
+    </div>
+{% endblock %}

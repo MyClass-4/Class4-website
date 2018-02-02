@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+  {% block title %}
+  <title>Class4-Website</title>
+  {% endblock %}
+  {% load staticfiles %}
+  <link rel="stylesheet" type="text/css" href="{% static 'layout/css/navigator.css' %}">
+  <link rel="stylesheet" type="text/css" href="{% static 'layout/css/header.css' %}">
+  <link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.min.css' %}">
+  <script src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
+  <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+  {% block css_js_static %}
+  {% endblock %}
+</head>
+<body>
+  <nav class="navbar navbar-inverse navbar-fixed-top" id="navigator">
+  	<div class="container-fluid">
+  	  <div class="navbar-header">
+  	    <a class="navbar-brand" href="{% url 'index' %}">
+  	      <img id="brand" alt="Brand" src="{% static 'layout/images/class4_brand.png' %}">
+  	    </a>
+  	  </div>
+
+  	  <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+  	    <ul class="nav navbar-nav">
+  	  	  <li><p class="navbar-text">Signed in as {{request.session.user_name}} </p></li>
+  	  	  <li class="dropdown">
+  	  	    <button id="feature" type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">功能菜单<span class="caret"></span></button>
+  	  	    <ul class="dropdown-menu">
+  	  	      <li><a href="{% url 'forum_index' %}">论坛</a></li>
+              <li><a href="{% url 'homework_index' %}">作业</a></li>
+              <li><a href="{% url 'webscraping_index' %}">爬虫</a></li>
+              <li role="separator" class="divider"></li>
+              <li><a href="{% url 'logout' %}">登出</a></li>
+  	  	    </ul>
+  	  	  </li>
+  	    </ul>
+  	  </div>
+  	</div>
+  </nav>
+
+  {% block header %}
+  {% endblock %}
+
+  <div class="container">
+      {% block content %}
+      {% endblock %}
+  </div>
+</body>
+</html>

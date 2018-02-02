@@ -1,0 +1,14 @@
+#navigator {
+	background-color: rgba(255,255,255,0);
+	border: 0;
+	color: white;
+}
+
+#brand {
+	height: 150%;
+	margin-bottom: 20px;
+}
+
+#feature {
+	margin-top: 10%;
+}

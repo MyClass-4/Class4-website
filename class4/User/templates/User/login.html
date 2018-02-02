@@ -3,15 +3,17 @@
 <head>
 	<title>用户登录</title>
 	<meta charset="utf-8">
-	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script>
+	<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.0/jquery.js"></script> -->
+
 	{% load staticfiles %}
+	<script type="text/javascript" src="{% static 'jQuery/jquery-3.1.1.min.js' %}"></script>
 	<link rel='stylesheet' type='text/css' href="{% static 'User/css/login.css' %}" />
 	<script type='text/javascript' src="{% static 'User/js/login.js' %}"></script>
 </head>
 <body>
 	<div id="logo"></div>
 	<div id="form">
-		<form action="#" method="post">
+		<form action="" method="POST">
 			<!-- 一定要加这句话！！ -->
       {% csrf_token %}
 			<input id="number" class="Input" type="text" name="studentNumber" placeholder="请输入八位学号">
