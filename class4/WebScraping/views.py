@@ -1,3 +1,4 @@
+
 # -*- coding -*-
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
@@ -9,7 +10,6 @@ import lxml.html
 import os
 
 # Create your views here.
-
 
 
 def download(url, user_agent='wswp', proxy=None, error_num=5):
